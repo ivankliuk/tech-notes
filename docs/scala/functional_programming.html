@@ -1,0 +1,223 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Functional Programming &#8212; Tech Notes  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Implicits" href="implicits.html" />
+    <link rel="prev" title="Scala" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="functional-programming">
+<h1>Functional Programming<a class="headerlink" href="#functional-programming" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="higher-order-function">
+<h2>Higher order function<a class="headerlink" href="#higher-order-function" title="Permalink to this headline">¶</a></h2>
+<p>A function but which performs one or both of the following things:</p>
+<ul class="simple">
+<li>Take other functions as arguments;</li>
+<li>Return functions as their results.</li>
+</ul>
+</div>
+<div class="section" id="function-literal">
+<h2>Function literal<a class="headerlink" href="#function-literal" title="Permalink to this headline">¶</a></h2>
+<p id="id1">A function literal is an alternate syntax for defining a function.
+It’s useful for when you want to pass a function as an argument to a method
+(especially a higher-order one like a fold or a filter operation) but you don’t
+want to define a separate function. Function literals are anonymous - they don’t
+have a name by default, but you can give them a name by binding them to
+a variable:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Usage</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+<span class="c1">// res0: (Int, Int) =&gt; Int = $$Lambda$5584/1797607710@953f466</span>
+
+<span class="c1">// You can bind them to variables:</span>
+<span class="k">val</span> <span class="n">mul</span> <span class="k">=</span> <span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+<span class="c1">// mul: (Int, Int) =&gt; Int = $$Lambda$5586/1640763669@7d0a1a1e</span>
+
+<span class="n">mul</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+<span class="c1">// res2: Int = 6</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="lambda-function">
+<h2>Lambda function<a class="headerlink" href="#lambda-function" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+<div class="section" id="tail-recursion">
+<h2>Tail recursion<a class="headerlink" href="#tail-recursion" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+<div class="section" id="currying">
+<h2>Currying<a class="headerlink" href="#currying" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+<div class="section" id="option">
+<h2>Option<a class="headerlink" href="#option" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Rough definition</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">object</span> <span class="nc">Option</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">apply</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="nc">None</span> <span class="k">else</span> <span class="nc">Some</span><span class="o">(</span><span class="n">x</span><span class="o">)</span>
+  <span class="k">def</span> <span class="n">empty</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span>
+<span class="o">}</span>
+
+<span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">Product</span> <span class="k">with</span> <span class="nc">Serializable</span> <span class="o">{</span>
+  <span class="n">self</span> <span class="k">=&gt;</span> <span class="o">???</span>
+<span class="o">}</span>
+
+<span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Some</span><span class="o">[</span><span class="kt">+A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">isEmpty</span> <span class="k">=</span> <span class="kc">false</span>
+  <span class="k">def</span> <span class="n">get</span> <span class="k">=</span> <span class="n">x</span>
+<span class="o">}</span>
+
+<span class="k">case</span> <span class="k">object</span> <span class="nc">None</span> <span class="k">extends</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">Nothing</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">isEmpty</span> <span class="k">=</span> <span class="kc">true</span>
+  <span class="k">def</span> <span class="n">get</span> <span class="k">=</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">NoSuchElementException</span><span class="o">(</span><span class="s">&quot;None.get&quot;</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="either">
+<h2>Either<a class="headerlink" href="#either" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+<div class="section" id="tuple">
+<h2>Tuple<a class="headerlink" href="#tuple" title="Permalink to this headline">¶</a></h2>
+<p>Tuples combine a fixed number of items together so that they can be passed
+around as whole. A tuple is immutable and can hold objects with different types,
+unlike an array or list.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Tech Notes</a></h1>
+
+
+
+<p class="blurb">A knot in my hanky</p>
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oop/index.html">Object oriented programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/index.html">Python</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Scala</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Functional Programming</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#higher-order-function">Higher order function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#function-literal">Function literal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambda-function">Lambda function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tail-recursion">Tail recursion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#currying">Currying</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option">Option</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#either">Either</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tuple">Tuple</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="implicits.html">Implicits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="type_class.html">Type class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cats.html">Cats library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation_models.html">Evaluation models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="single_abstract_method.html">Single Abstract Method (SAM)</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/ivankliuk/tech-notes">Sources</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Scala</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Scala</a></li>
+      <li>Next: <a href="implicits.html" title="next chapter">Implicits</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ivan Kliuk.
+      
+      |
+      <a href="../_sources/scala/functional_programming.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-120714400-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

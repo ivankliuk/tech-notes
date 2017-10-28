@@ -1,0 +1,7 @@
+.idea
+*.iml
+
+# Sphinx generated files
+doctrees
+_sources
+docs/html
