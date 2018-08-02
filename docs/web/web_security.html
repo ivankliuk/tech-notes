@@ -7,17 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Web Security &#8212; Tech Notes  documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Evaluation models" href="scala/evaluation_models.html" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Web" href="index.html" />
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -32,8 +32,9 @@
             
   <div class="section" id="web-security">
 <h1>Web Security<a class="headerlink" href="#web-security" title="Permalink to this headline">¶</a></h1>
+</div>
 <div class="section" id="general">
-<h2>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
+<h1>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h1>
 <p>A web session is a sequence of network HTTP request and response transactions associated to the same user.
 HTTP is a stateless protocol where each request and response pair is independent of other web interactions. Therefore, in order to introduce the concept of a session, it is required to implement session management capabilities that link both the authentication and access control (or authorization) modules commonly available in web applications:
 <a class="reference external" href="https://www.owasp.org/index.php/File:Session-Management-Diagram_Cheat-Sheet.png">https://www.owasp.org/index.php/File:Session-Management-Diagram_Cheat-Sheet.png</a></p>
@@ -41,7 +42,7 @@ HTTP is a stateless protocol where each request and response pair is independent
 <p>In order to keep the authenticated state and track the users progress within the web application, applications provide users with a session identifier (session ID or token) that is assigned at session creation time, and is shared and exchanged by the user and the web application for the duration of the session (it is sent on every HTTP request). The session ID is a “name=value” pair.</p>
 </div>
 <div class="section" id="session-id-properties">
-<h2>Session ID Properties<a class="headerlink" href="#session-id-properties" title="Permalink to this headline">¶</a></h2>
+<h1>Session ID Properties<a class="headerlink" href="#session-id-properties" title="Permalink to this headline">¶</a></h1>
 <p><em>Session ID Name Fingerprinting</em>
 The name used by the session ID should not be extremely descriptive nor offer unnecessary details about the purpose and meaning of the ID.
 Therefore, the session ID name can disclose the technologies and programming languages used by the web application.
@@ -55,7 +56,7 @@ The session ID value must provide at least 64 bits of entropy (if a good PRNG is
 <p><em>Session ID Content (or Value)</em>
 The session ID content (or value) must be meaningless to prevent information disclosure attacks, where an attacker is able to decode the contents of the ID and extract details of the user, the session, or the inner workings of the web application.</p>
 <p># Continue here: <a class="reference external" href="https://www.owasp.org/index.php/Session_Management_Cheat_Sheet">https://www.owasp.org/index.php/Session_Management_Cheat_Sheet</a></p>
-</div>
+<p>TODO</p>
 </div>
 
 
@@ -64,7 +65,7 @@ The session ID content (or value) must be meaningless to prevent information dis
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Tech Notes</a></h1>
+<h1 class="logo"><a href="../index.html">Tech Notes</a></h1>
 
 
 
@@ -78,11 +79,12 @@ The session ID content (or value) must be meaningless to prevent information dis
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="general/index.html">General</a></li>
-<li class="toctree-l1"><a class="reference internal" href="oop/index.html">Object oriented programming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="python/index.html">Python</a></li>
-<li class="toctree-l1"><a class="reference internal" href="scala/index.html">Scala</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Web Security</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oop/index.html">Object oriented programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/index.html">Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scala/index.html">Scala</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Web</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Web Security</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#general">General</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#session-id-properties">Session ID Properties</a></li>
 </ul>
@@ -99,15 +101,17 @@ The session ID content (or value) must be meaningless to prevent information dis
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="scala/evaluation_models.html" title="previous chapter">Evaluation models</a></li>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Web</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Web</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
+    <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
@@ -124,7 +128,7 @@ The session ID content (or value) must be meaningless to prevent information dis
       &copy;2018, Ivan Kliuk.
       
       |
-      <a href="_sources/web_security.rst.txt"
+      <a href="../_sources/web/web_security.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

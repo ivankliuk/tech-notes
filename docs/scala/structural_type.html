@@ -1,0 +1,202 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Structural type &#8212; Tech Notes  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Web" href="../web/index.html" />
+    <link rel="prev" title="Single Abstract Method (SAM)" href="single_abstract_method.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="structural-type">
+<span id="id1"></span><h1>Structural type<a class="headerlink" href="#structural-type" title="Permalink to this headline">¶</a></h1>
+<p>Structural Type allow to set a behaviour very similar to what dynamic
+languages allow to do when they support <a class="reference internal" href="../general/duck_typing.html#duck-typing"><span class="std std-ref">duck typing</span></a>.</p>
+<p>The methods in a structural type are called via reflection, which is a lot
+slower on the JVM than a regular method call. You can define it either
+as a function parameter or as a type one.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Structural type definitions</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">printSound</span> <span class="k">=</span> <span class="o">(</span><span class="n">animal</span><span class="k">:</span> <span class="o">{</span><span class="kt">def</span> <span class="kt">sound</span><span class="o">()</span><span class="kt">:</span> <span class="kt">String</span><span class="o">})</span> <span class="k">=&gt;</span> <span class="n">println</span><span class="o">(</span><span class="n">animal</span><span class="o">.</span><span class="n">sound</span><span class="o">())</span>
+<span class="c1">// printSound: AnyRef{def sound(): String} =&gt; Unit = $$Lambda$5991/712224434@1dd12065</span>
+
+<span class="k">def</span> <span class="n">printSound1</span><span class="o">[</span><span class="kt">A</span> <span class="k">&lt;:</span> <span class="o">{</span> <span class="kt">def</span> <span class="kt">sound</span><span class="o">()</span><span class="kt">:</span> <span class="kt">String</span> <span class="o">}](</span><span class="n">animal</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">println</span><span class="o">(</span><span class="n">animal</span><span class="o">.</span><span class="n">sound</span><span class="o">())</span>
+<span class="c1">// printSound1: [A &lt;: AnyRef{def sound(): String}](animal: A)Unit</span>
+
+<span class="k">class</span> <span class="nc">Dog</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">sound</span><span class="o">()</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;Woof!&quot;</span>
+<span class="o">}</span>
+
+<span class="k">val</span> <span class="n">dog</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Dog</span><span class="o">()</span>
+<span class="c1">// dog: Dog = Dog@47d057ea</span>
+
+<span class="n">printSound</span><span class="o">(</span><span class="n">dog</span><span class="o">)</span>
+<span class="c1">// Woof!</span>
+
+<span class="n">printSound1</span><span class="o">(</span><span class="n">dog</span><span class="o">)</span>
+<span class="c1">// Woof!</span>
+</pre></div>
+</div>
+</div>
+<p>An interface of object you’re passing as the parameter must have exactly
+the same signature as the structural type definition:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Interface object</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">printSound</span><span class="o">(</span><span class="n">animal</span><span class="k">:</span> <span class="o">{</span><span class="kt">def</span> <span class="kt">sound</span><span class="o">()</span><span class="kt">:</span> <span class="kt">String</span><span class="o">})</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">println</span><span class="o">(</span><span class="n">animal</span><span class="o">.</span><span class="n">sound</span><span class="o">())</span>
+<span class="c1">// printSound: (animal: AnyRef{def sound(): String})Unit</span>
+
+<span class="k">class</span> <span class="nc">WhiteCat</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">sound</span> <span class="k">=</span> <span class="s">&quot;Meow!&quot;</span>
+<span class="o">}</span>
+
+<span class="k">class</span> <span class="nc">RedCat</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">sound</span> <span class="k">=</span> <span class="s">&quot;Meow-meow!&quot;</span>
+<span class="o">}</span>
+
+<span class="k">class</span> <span class="nc">BlackCat</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">sound</span><span class="o">()</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;Meow-meow-meow!&quot;</span>
+<span class="o">}</span>
+
+<span class="n">printSound</span><span class="o">(</span><span class="k">new</span> <span class="nc">WhiteCat</span><span class="o">())</span>
+<span class="c1">// &lt;console&gt;:14: error: type mismatch;</span>
+<span class="c1">//  found   : WhiteCat</span>
+<span class="c1">//  required: AnyRef{def sound(): String}</span>
+           <span class="n">printSound</span><span class="o">(</span><span class="k">new</span> <span class="nc">WhiteCat</span><span class="o">())</span>
+                      <span class="o">^</span>
+
+<span class="n">printSound</span><span class="o">(</span><span class="k">new</span> <span class="nc">RedCat</span><span class="o">)</span>
+<span class="c1">// &lt;console&gt;:14: error: type mismatch;</span>
+<span class="c1">//  found   : RedCat</span>
+<span class="c1">//  required: AnyRef{def sound(): String}</span>
+           <span class="n">printSound</span><span class="o">(</span><span class="k">new</span> <span class="nc">RedCat</span><span class="o">)</span>
+                      <span class="o">^</span>
+
+<span class="n">printSound</span><span class="o">(</span><span class="k">new</span> <span class="nc">BlackCat</span><span class="o">)</span>
+<span class="c1">// Meow-meow-meow!</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Tech Notes</a></h1>
+
+
+
+<p class="blurb">A knot in my hanky</p>
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oop/index.html">Object oriented programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/index.html">Python</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Scala</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="functional_programming.html">Functional Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implicits.html">Implicits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="type_class.html">Type class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cats.html">Cats library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation_models.html">Evaluation models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="single_abstract_method.html">Single Abstract Method (SAM)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Structural type</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../web/index.html">Web</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/ivankliuk/tech-notes">Sources</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Scala</a><ul>
+      <li>Previous: <a href="single_abstract_method.html" title="previous chapter">Single Abstract Method (SAM)</a></li>
+      <li>Next: <a href="../web/index.html" title="next chapter">Web</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ivan Kliuk.
+      
+      |
+      <a href="../_sources/scala/structural_type.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-120714400-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

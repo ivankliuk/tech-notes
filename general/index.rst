@@ -6,3 +6,4 @@ General
 
     adt
     polymorphism
+    duck_typing

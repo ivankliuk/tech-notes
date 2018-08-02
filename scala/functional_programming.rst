@@ -9,10 +9,10 @@ A function but which performs one or both of the following things:
 - Take other functions as arguments;
 - Return functions as their results.
 
+.. _function_literal:
+
 Function literal
 ----------------
-
-.. _function_literal:
 
 A function literal is an alternate syntax for defining a function.
 It's useful for when you want to pass a function as an argument to a method

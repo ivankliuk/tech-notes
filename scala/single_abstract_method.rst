@@ -26,4 +26,3 @@ presented as a :ref:`function literal <function_literal>`:
     // SAM syntax
     val prn: Printable = (msg: String) => println(msg)
     // prn: Printable = $anonfun$1@3de800ce
-

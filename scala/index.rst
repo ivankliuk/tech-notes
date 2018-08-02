@@ -10,3 +10,4 @@ Scala
     cats
     evaluation_models
     single_abstract_method
+    structural_type
