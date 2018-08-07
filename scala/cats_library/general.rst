@@ -1,5 +1,5 @@
-Cats library
-============
+General
+=======
 
 Shortcuts to simplify imports:
 
