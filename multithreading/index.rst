@@ -1,5 +1,5 @@
-General
-=======
+Multithreading
+==============
 
  .. toctree::
     :maxdepth: 4

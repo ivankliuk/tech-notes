@@ -1,0 +1,217 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Function composition &#8212; Tech Notes  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Implicits" href="implicits.html" />
+    <link rel="prev" title="Functional Programming" href="functional_programming.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="function-composition">
+<h1>Function composition<a class="headerlink" href="#function-composition" title="Permalink to this headline">¶</a></h1>
+<p>A function with no argument has only one method:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Function0 rough definition</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span>    <span class="k">trait</span> <span class="nc">Function0</span><span class="o">[</span><span class="kt">+R</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">AnyRef</span> <span class="o">{</span> <span class="n">self</span> <span class="k">=&gt;</span>
+      <span class="k">def</span> <span class="n">apply</span><span class="o">()</span><span class="k">:</span> <span class="kt">R</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<p><cite>compose</cite> and <cite>andThen</cite> exist only for function with one argument.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Function1 rough definition</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">trait</span> <span class="nc">Function1</span><span class="o">[</span><span class="kt">-T1</span>, <span class="kt">+R</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">AnyRef</span> <span class="o">{</span> <span class="n">self</span> <span class="k">=&gt;</span>
+  <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">v1</span><span class="k">:</span> <span class="kt">T1</span><span class="o">)</span><span class="k">:</span> <span class="kt">R</span>
+  <span class="k">def</span> <span class="n">compose</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">g</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">T1</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">R</span> <span class="k">=</span> <span class="o">{</span> <span class="n">x</span> <span class="k">=&gt;</span> <span class="n">apply</span><span class="o">(</span><span class="n">g</span><span class="o">(</span><span class="n">x</span><span class="o">))</span> <span class="o">}</span>
+  <span class="k">def</span> <span class="n">andThen</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">g</span><span class="k">:</span> <span class="kt">R</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">T1</span> <span class="o">=&gt;</span> <span class="n">A</span> <span class="k">=</span> <span class="o">{</span> <span class="n">x</span> <span class="k">=&gt;</span> <span class="n">g</span><span class="o">(</span><span class="n">apply</span><span class="o">(</span><span class="n">x</span><span class="o">))</span> <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Function composition</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">getStringLength</span> <span class="k">=</span> <span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">length</span>
+<span class="c1">// getStringLength: String =&gt; Int = $$Lambda$5501/1320792033@42cb004b</span>
+
+<span class="k">val</span> <span class="n">double</span> <span class="k">=</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="c1">// double: Int =&gt; Int = $$Lambda$5523/1381464362@42ee8e68</span>
+
+<span class="n">getStringLength</span> <span class="n">andThen</span> <span class="n">double</span>
+<span class="c1">// res0: String =&gt; Int = scala.Function1$$Lambda$5531/570615914@73d10146</span>
+
+<span class="n">res0</span><span class="o">(</span><span class="s">&quot;Hello world!&quot;</span><span class="o">)</span>
+<span class="c1">// res1: Int = 24</span>
+
+<span class="n">double</span> <span class="n">compose</span> <span class="n">getStringLength</span>
+<span class="c1">// res2: String =&gt; Int = scala.Function1$$Lambda$5577/1419413857@1edaffff</span>
+
+<span class="n">res2</span><span class="o">(</span><span class="s">&quot;Hello world!&quot;</span><span class="o">)</span>
+<span class="c1">// res3: Int = 24</span>
+</pre></div>
+</div>
+</div>
+<p><cite>tupled</cite> creates a tupled version of the function: instead of <cite>n</cite> arguments,
+it accepts a single tuple argument. It can be helpful if you need to compose
+functions with more that one argument:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Function2 rough definition</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span>    <span class="k">trait</span> <span class="nc">Function2</span><span class="o">[</span><span class="kt">-T1</span>, <span class="kt">-T2</span>, <span class="kt">+R</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">AnyRef</span> <span class="o">{</span> <span class="n">self</span> <span class="k">=&gt;</span>
+      <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">v1</span><span class="k">:</span> <span class="kt">T1</span><span class="o">,</span> <span class="n">v2</span><span class="k">:</span> <span class="kt">T2</span><span class="o">)</span><span class="k">:</span> <span class="kt">R</span>
+      <span class="k">def</span> <span class="n">curried</span><span class="k">:</span> <span class="kt">T1</span> <span class="o">=&gt;</span> <span class="n">T2</span> <span class="k">=&gt;</span> <span class="n">R</span> <span class="k">=</span> <span class="o">{</span> <span class="o">(</span><span class="n">x1</span><span class="k">:</span> <span class="kt">T1</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">x2</span><span class="k">:</span> <span class="kt">T2</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">apply</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span> <span class="n">x2</span><span class="o">)</span> <span class="o">}</span>
+      <span class="k">def</span> <span class="n">tupled</span><span class="k">:</span> <span class="kt">Tuple2</span><span class="o">[</span><span class="kt">T1</span>, <span class="kt">T2</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="n">R</span> <span class="k">=</span> <span class="o">{</span> <span class="k">case</span> <span class="nc">Tuple2</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span> <span class="n">x2</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">apply</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span> <span class="n">x2</span><span class="o">)</span> <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Composition of functions with more than one argument</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">sum</span> <span class="k">=</span> <span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="c1">// sum: (Int, Int) =&gt; Int = $$Lambda$6297/2018725025@4e988072</span>
+
+<span class="k">val</span> <span class="n">multiplyBy2</span> <span class="k">=</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="c1">// multiplyBy2: Int =&gt; Int = $$Lambda$6380/1906993348@1f5b9821</span>
+
+<span class="n">sum</span><span class="o">.</span><span class="n">tupled</span> <span class="n">andThen</span> <span class="n">multiplyBy2</span>
+<span class="c1">// res1: ((Int, Int)) =&gt; Int = scala.Function1$$Lambda$6382/1216992973@bb8e009</span>
+
+<span class="n">res1</span><span class="o">((</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">))</span>
+<span class="c1">// res2: Int = 6</span>
+
+<span class="c1">// Newly created function accepts a tuple of arguments. It can be easily untupled:</span>
+
+<span class="nc">Function</span><span class="o">.</span><span class="n">untupled</span><span class="o">(</span><span class="n">res1</span><span class="o">)</span>
+<span class="c1">// res3: (Int, Int) =&gt; Int = scala.Function$$$Lambda$6404/1694053404@274a4d89</span>
+
+<span class="n">res3</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">)</span>
+<span class="c1">// res4: Int = 6</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Tech Notes</a></h1>
+
+
+
+<p class="blurb">A knot in my hanky</p>
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oop/index.html">Object oriented programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/index.html">Python</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Scala</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="functional_programming.html">Functional Programming</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Function composition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implicits.html">Implicits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="type_class.html">Type class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation_models.html">Evaluation models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="single_abstract_method.html">Single Abstract Method (SAM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structural_type.html">Structural type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cats_library/index.html">Cats library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../multithreading/index.html">Multithreading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/index.html">Web</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/ivankliuk/tech-notes">Sources</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Scala</a><ul>
+      <li>Previous: <a href="functional_programming.html" title="previous chapter">Functional Programming</a></li>
+      <li>Next: <a href="implicits.html" title="next chapter">Implicits</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ivan Kliuk.
+      
+      |
+      <a href="../_sources/scala/function_composition.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-120714400-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

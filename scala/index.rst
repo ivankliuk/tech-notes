@@ -5,6 +5,7 @@ Scala
     :maxdepth: 4
 
     functional_programming
+    function_composition
     implicits
     type_class
     evaluation_models
