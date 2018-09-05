@@ -16,3 +16,5 @@ Contents
    scala/index
    multithreading/index
    web/index
+   architecture/index
+   messaging_systems/index

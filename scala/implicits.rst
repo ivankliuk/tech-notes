@@ -27,7 +27,7 @@ scope at the call site, which roughly consists of:
 
 
 When the compiler searches for an implicit it looks for one matching the
-type or subtype. Thus we can use variance annota􏰀tions to control type class
+type or subtype. Thus we can use variance 􏰀annotations to control type class
 instance selection to some extent.
 
-TODO
+TODO: https://docs.scala-lang.org/tutorials/FAQ/finding-implicits.html

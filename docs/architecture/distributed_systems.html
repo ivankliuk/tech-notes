@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Duck typing &#8212; Tech Notes  documentation</title>
+    <title>Distributed systems &#8212; Tech Notes  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,8 +15,6 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Object oriented programming" href="../oop/index.html" />
-    <link rel="prev" title="Polymorphism" href="polymorphism.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,39 +29,22 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="duck-typing">
-<span id="id1"></span><h1>Duck typing<a class="headerlink" href="#duck-typing" title="Permalink to this headline">¶</a></h1>
-<p>Duck typing is an approach to determine whether an object can be used for
-a particular purpose or not.
-With normal typing, suitability is determined by an object’s type.
-In duck typing, an object’s suitability is determined by the presence
-of certain methods and properties, rather than the type of the object itself.</p>
-<p>The name comes from the phrase “If it looks like a duck and quacks like a duck,
-it’s a duck”.</p>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Duck typing</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Duck</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">quack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Quack!&quot;</span>
-
-<span class="k">class</span> <span class="nc">Cat</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">quack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Cats quack sometimes!&quot;</span>
-
-<span class="k">def</span> <span class="nf">quack_me</span><span class="p">(</span><span class="n">entity</span><span class="p">):</span>
-    <span class="c1"># We expect the interface here, not the type.</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">quack</span><span class="p">())</span>
-
-<span class="n">quack_me</span><span class="p">(</span><span class="n">Duck</span><span class="p">())</span>
-<span class="c1"># Quack!</span>
-
-<span class="n">quack_me</span><span class="p">(</span><span class="n">Cat</span><span class="p">())</span>
-<span class="c1"># Cats quack sometimes!</span>
-</pre></div>
-</div>
-</div>
-<p>Scala has its own approach to leverage duck typing called
-<a class="reference internal" href="../scala/structural_type.html#structural-type"><span class="std std-ref">structural type</span></a>.</p>
+  <div class="section" id="distributed-systems">
+<h1>Distributed systems<a class="headerlink" href="#distributed-systems" title="Permalink to this headline">¶</a></h1>
+<p><em>Distributed system</em> is a collection of resources that are instructed to achieve
+a specific task.</p>
+<p><em>Node (worker)</em> is a independent computational resource.</p>
+<p><em>Controller</em> is a worker which takes responsibility of coordination
+the other nodes to ensure consistency and optimal use of resources. It checks
+for worker availability and it’s health status. If controller is determined that
+redundancy is required it will promote a node into a <em>leader</em> which take the
+ownership of the task assigned. The leader will assign the task to <em>peers</em>.</p>
+<p><em>Cluster</em> is a group of nodes managed by controller.</p>
+<p><em>Consensus (gossip) protocol</em> is a form of communication between nodes in the
+cluster. It’s used for configuration management, leader election, health
+status etc. <a class="reference external" href="https://zookeeper.apache.org/">Apache Zookeeper</a> is a
+centralized service for maintaining metadata about a cluster of distributed
+nodes which implements consensus protocol itself.</p>
 </div>
 
 
@@ -85,20 +66,15 @@ it’s a duck”.</p>
 
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">General</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="adt.html">Algebraic data type</a></li>
-<li class="toctree-l2"><a class="reference internal" href="adt.html#abstract-data-type">Abstract data type</a></li>
-<li class="toctree-l2"><a class="reference internal" href="polymorphism.html">Polymorphism</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Duck typing</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../oop/index.html">Object oriented programming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/index.html">Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../scala/index.html">Scala</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../multithreading/index.html">Multithreading</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../web/index.html">Web</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../messaging_systems/index.html">Messaging systems</a></li>
 </ul>
 
 
@@ -112,10 +88,6 @@ it’s a duck”.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">General</a><ul>
-      <li>Previous: <a href="polymorphism.html" title="previous chapter">Polymorphism</a></li>
-      <li>Next: <a href="../oop/index.html" title="next chapter">Object oriented programming</a></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div>
@@ -139,7 +111,7 @@ it’s a duck”.</p>
       &copy;2018, Ivan Kliuk.
       
       |
-      <a href="../_sources/general/duck_typing.rst.txt"
+      <a href="../_sources/architecture/distributed_systems.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
