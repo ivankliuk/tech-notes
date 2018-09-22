@@ -19,4 +19,3 @@ cluster. It's used for configuration management, leader election, health
 status etc. `Apache Zookeeper <https://zookeeper.apache.org/>`_ is a
 centralized service for maintaining metadata about a cluster of distributed
 nodes which implements consensus protocol itself.
-

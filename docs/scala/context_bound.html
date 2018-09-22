@@ -41,8 +41,8 @@ The syntax goes like this:</p>
 </div>
 <p>How can <cite>B[A]</cite> implicit parameter be reached?</p>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">f</span><span class="o">[</span><span class="kt">A</span> <span class="kt">:</span> <span class="kt">B</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
-    <span class="k">val</span> <span class="n">ev</span> <span class="k">=</span> <span class="n">implicitly</span><span class="o">[</span><span class="kt">B</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span>
-    <span class="n">g</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">ev</span> <span class="k">=</span> <span class="n">implicitly</span><span class="o">[</span><span class="kt">B</span><span class="o">[</span><span class="kt">A</span><span class="o">]]</span>
+  <span class="n">g</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
 <span class="o">}</span>
 </pre></div>
 </div>
@@ -84,6 +84,7 @@ The syntax goes like this:</p>
 <li class="toctree-l2"><a class="reference internal" href="evaluation_models.html">Evaluation models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="single_abstract_method.html">Single Abstract Method (SAM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structural_type.html">Structural type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="value_classes.html">Value classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cats_library/index.html">Cats library</a></li>
 </ul>
 </li>

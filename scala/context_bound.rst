@@ -14,8 +14,8 @@ How can `B[A]` implicit parameter be reached?
 .. code-block:: scala
 
     def f[A : B](a: A) = {
-        val ev = implicitly[B[A]]
-        g(a)
+      val ev = implicitly[B[A]]
+      g(a)
     }
 
 De-sugared version of Context Bound

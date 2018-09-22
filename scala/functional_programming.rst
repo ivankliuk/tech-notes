@@ -85,3 +85,45 @@ Tuple
 Tuples combine a fixed number of items together so that they can be passed
 around as whole. A tuple is immutable and can hold objects with different types,
 unlike an array or list.
+
+Referential transparency
+------------------------
+
+An expression is called referentially transparent if it can be replaced with
+its corresponding value without changing the program's behavior. This requires
+that the expression is pure, that is to say the expression value must be
+the same for the same inputs and its evaluation must have no side effects.
+
+.. code-block:: scala
+
+    import cats.effect.IO
+    import scala.concurrent.{ Await, Future}
+    import scala.concurrent.ExecutionContext.Implicits.global
+    import scala.concurrent.duration._
+
+    val prnF = Future { println("Hello from Future!"); 1 }
+    // Hello from Future!
+    // prnF: scala.concurrent.Future[Int] = Future(Success(1))
+
+    val prnIO = IO { println("Hello from IO!"); 1}
+    // prnIO: cats.effect.IO[Int] = IO$684479575
+
+    val fRes = for {
+      f1 <- prnF
+      f2 <- prnF
+    } yield f1 + f2
+    // fRes: scala.concurrent.Future[Int] = Future(<not completed>)
+
+    Await.result(fRes, 2.seconds) == 2
+    // res0: Boolean = true
+
+    val ioRes = for {
+      io1 <- prnIO
+      io2 <- prnIO
+    } yield io1 + io2
+    // ioRes: cats.effect.IO[Int] = IO$985832276
+
+    ioRes.unsafeRunSync() == 2
+    // Hello from IO!
+    // Hello from IO!
+    // res1: Boolean = true

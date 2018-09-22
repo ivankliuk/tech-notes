@@ -17,11 +17,10 @@ Messaging goals:
 - Reliability and durability
 - Loosely coupled producers and consumers
 
-Terminology
------------
+**Terminology**
 
 *Producer/Consumer* (same as publisher/subscriber) are used to publish and
-  receive messages to a topic respectively.
+receive messages to a topic respectively.
 
 *Topic* is a central Kafka abstraction. It's a feed or category of messages.
 

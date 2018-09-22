@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Messaging systems &#8212; Tech Notes  documentation</title>
+    <title>Testing &#8212; Tech Notes  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Kafka" href="kafka.html" />
-    <link rel="prev" title="Distributed systems" href="../architecture/distributed_systems.html" />
+    <link rel="next" title="Object oriented programming" href="../oop/index.html" />
+    <link rel="prev" title="Duck typing" href="duck_typing.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,15 +31,42 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="messaging-systems">
-<h1>Messaging systems<a class="headerlink" href="#messaging-systems" title="Permalink to this headline">¶</a></h1>
-<blockquote>
-<div><div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="kafka.html">Kafka</a></li>
+  <div class="section" id="testing">
+<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
+<p><strong>Testing types</strong></p>
+<ul class="simple">
+<li>Unit tests work on a single component of the application.</li>
+<li>Integration tests mock of stub out external dependencies but tests several
+components of the application at once.</li>
+<li>Functional tests exercise the entire stack of the application which could
+include other applications, message brokers, databases, etc.</li>
 </ul>
-</div>
-</div></blockquote>
+<img alt="Testing types" src="../_images/testing_types.svg" /><p><strong>Testing pyramid</strong></p>
+<p>The testing pyramid is a way of thinking about different kinds of
+automated tests should be used to create a balanced portfolio. The essential
+point is that you should have many more unit tests than high level functional
+tests. The tests on top of the pyramid have higher cost of writing and
+maintaining. Execution time and computer resources consuming decrease from top
+to bottom.</p>
+<img alt="Testing pyramid" src="../_images/testing_pyramid.svg" /><p><strong>Test Doubles</strong></p>
+<p><strong>Test Double</strong> as the generic term for any kind of pretend object used in
+place of a real object for testing purposes. There are several types of those:</p>
+<ul class="simple">
+<li><em>Dummy objects</em> are passed around but never actually used. Usually they are
+just used to fill parameter lists.</li>
+<li><em>Fake objects</em> replace the actual code by implementing the same interface
+without interacting with other objects e.g. an in memory database.</li>
+<li><em>Stubs</em> are written to behave in particular way e.g. return an error or a good
+value.</li>
+<li><em>Spies</em> record some information based on how they were called to be inspected
+later e.g. an email service that records how many messages it was sent.</li>
+<li><em>Mocks</em> are told how they expect to be called and then can be verified later.</li>
+</ul>
+<p><strong>Running strategy</strong></p>
+<p>Unit and integration tests run before the pipeline because they are cheap and
+fast. For instance, they can be triggered on each new pull request.
+Functional tests are slow and executed after application deployment on staging
+environment but before deployment to production.</p>
 </div>
 
 
@@ -62,17 +89,21 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="adt.html">Algebraic data type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adt.html#abstract-data-type">Abstract data type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polymorphism.html">Polymorphism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="duck_typing.html">Duck typing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Testing</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../oop/index.html">Object oriented programming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python/index.html">Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../scala/index.html">Scala</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../multithreading/index.html">Multithreading</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../web/index.html">Web</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architecture</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Messaging systems</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="kafka.html">Kafka</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../messaging_systems/index.html">Messaging systems</a></li>
 </ul>
 
 
@@ -86,8 +117,10 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../architecture/distributed_systems.html" title="previous chapter">Distributed systems</a></li>
-      <li>Next: <a href="kafka.html" title="next chapter">Kafka</a></li>
+  <li><a href="index.html">General</a><ul>
+      <li>Previous: <a href="duck_typing.html" title="previous chapter">Duck typing</a></li>
+      <li>Next: <a href="../oop/index.html" title="next chapter">Object oriented programming</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
@@ -111,7 +144,7 @@
       &copy;2018, Ivan Kliuk.
       
       |
-      <a href="../_sources/messaging_systems/index.rst.txt"
+      <a href="../_sources/general/testing.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

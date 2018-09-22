@@ -112,6 +112,46 @@ a variable:</p>
 around as whole. A tuple is immutable and can hold objects with different types,
 unlike an array or list.</p>
 </div>
+<div class="section" id="referential-transparency">
+<h2>Referential transparency<a class="headerlink" href="#referential-transparency" title="Permalink to this headline">¶</a></h2>
+<p>An expression is called referentially transparent if it can be replaced with
+its corresponding value without changing the program’s behavior. This requires
+that the expression is pure, that is to say the expression value must be
+the same for the same inputs and its evaluation must have no side effects.</p>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">cats.effect.IO</span>
+<span class="k">import</span> <span class="nn">scala.concurrent.</span><span class="o">{</span> <span class="nc">Await</span><span class="o">,</span> <span class="nc">Future</span><span class="o">}</span>
+<span class="k">import</span> <span class="nn">scala.concurrent.ExecutionContext.Implicits.global</span>
+<span class="k">import</span> <span class="nn">scala.concurrent.duration._</span>
+
+<span class="k">val</span> <span class="n">prnF</span> <span class="k">=</span> <span class="nc">Future</span> <span class="o">{</span> <span class="n">println</span><span class="o">(</span><span class="s">&quot;Hello from Future!&quot;</span><span class="o">);</span> <span class="mi">1</span> <span class="o">}</span>
+<span class="c1">// Hello from Future!</span>
+<span class="c1">// prnF: scala.concurrent.Future[Int] = Future(Success(1))</span>
+
+<span class="k">val</span> <span class="n">prnIO</span> <span class="k">=</span> <span class="nc">IO</span> <span class="o">{</span> <span class="n">println</span><span class="o">(</span><span class="s">&quot;Hello from IO!&quot;</span><span class="o">);</span> <span class="mi">1</span><span class="o">}</span>
+<span class="c1">// prnIO: cats.effect.IO[Int] = IO$684479575</span>
+
+<span class="k">val</span> <span class="n">fRes</span> <span class="k">=</span> <span class="k">for</span> <span class="o">{</span>
+  <span class="n">f1</span> <span class="k">&lt;-</span> <span class="n">prnF</span>
+  <span class="n">f2</span> <span class="k">&lt;-</span> <span class="n">prnF</span>
+<span class="o">}</span> <span class="k">yield</span> <span class="n">f1</span> <span class="o">+</span> <span class="n">f2</span>
+<span class="c1">// fRes: scala.concurrent.Future[Int] = Future(&lt;not completed&gt;)</span>
+
+<span class="nc">Await</span><span class="o">.</span><span class="n">result</span><span class="o">(</span><span class="n">fRes</span><span class="o">,</span> <span class="mf">2.</span><span class="n">seconds</span><span class="o">)</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="c1">// res0: Boolean = true</span>
+
+<span class="k">val</span> <span class="n">ioRes</span> <span class="k">=</span> <span class="k">for</span> <span class="o">{</span>
+  <span class="n">io1</span> <span class="k">&lt;-</span> <span class="n">prnIO</span>
+  <span class="n">io2</span> <span class="k">&lt;-</span> <span class="n">prnIO</span>
+<span class="o">}</span> <span class="k">yield</span> <span class="n">io1</span> <span class="o">+</span> <span class="n">io2</span>
+<span class="c1">// ioRes: cats.effect.IO[Int] = IO$985832276</span>
+
+<span class="n">ioRes</span><span class="o">.</span><span class="n">unsafeRunSync</span><span class="o">()</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="c1">// Hello from IO!</span>
+<span class="c1">// Hello from IO!</span>
+<span class="c1">// res1: Boolean = true</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -147,6 +187,7 @@ unlike an array or list.</p>
 <li class="toctree-l3"><a class="reference internal" href="#option">Option</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#either">Either</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tuple">Tuple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#referential-transparency">Referential transparency</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="function_composition.html">Function composition</a></li>
@@ -156,12 +197,14 @@ unlike an array or list.</p>
 <li class="toctree-l2"><a class="reference internal" href="evaluation_models.html">Evaluation models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="single_abstract_method.html">Single Abstract Method (SAM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structural_type.html">Structural type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="value_classes.html">Value classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cats_library/index.html">Cats library</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../multithreading/index.html">Multithreading</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../web/index.html">Web</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../messaging_systems/index.html">Messaging systems</a></li>
 </ul>
 
 
