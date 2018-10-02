@@ -42,7 +42,41 @@ TODO
 Tail recursion
 --------------
 
-TODO
+A call is said to be in tail position if the caller does nothing other than
+return the value of the recursive call.
+
+`scala.annotation.tailrec` annotation gets information about whether method is
+optimised. You will then get a warning if they are not optimised by the compiler
+and compilation will fail.
+
+.. code-block:: scala
+    :caption: Failed tail recursive function
+
+    import scala.annotation.tailrec
+
+    @tailrec
+    def factorial(n: Int): Int = {
+      def go(n: Int, acc: Int): Int =
+        if (n <= 0) acc
+        else go(n - 1, n * acc)
+      go(n, 1)
+    }
+
+    // error: @tailrec annotated method contains no recursive calls
+    //       def factorial(n: Int): Int = {
+
+.. code-block:: scala
+    :caption: Working recursive function
+
+    import scala.annotation.tailrec
+
+    def factorial(n: Int): Int = {
+      @tailrec
+      def go(n: Int, acc: Int): Int =
+        if (n <= 0) acc
+        else go(n - 1, n * acc)
+      go(n, 1)
+    }
 
 Currying
 --------
@@ -95,6 +129,36 @@ that the expression is pure, that is to say the expression value must be
 the same for the same inputs and its evaluation must have no side effects.
 
 .. code-block:: scala
+    :caption: String vs. StringBuilder
+
+    val x = new StringBuilder("Hello")
+    // x: StringBuilder = Hello
+
+    val y = x.append(", World")
+    // y: StringBuilder = Hello, World
+
+    val r1 = y.toString
+    // r1: String = Hello, World
+
+    val r2 = y.toString
+    // r2: String = Hello, World
+
+    // r1 and r2 are the same
+
+    val x = new StringBuilder("Hello")
+    // x: StringBuilder = Hello
+
+    val r1 = x.append(", World").toString
+    // r1: String = Hello, World
+
+    scala> val r2 = x.append(", World").toString
+    // r2: String = Hello, World, World
+
+    // r1 and r2 are not the same because of StringBuilder has internal state
+    // and is not a pure function.
+
+.. code-block:: scala
+    :caption: Future vs. IO
 
     import cats.effect.IO
     import scala.concurrent.{ Await, Future}

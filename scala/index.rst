@@ -12,5 +12,6 @@ Scala
     evaluation_models
     single_abstract_method
     structural_type
-    value_classes
+    value_class
     cats_library/index
+    class

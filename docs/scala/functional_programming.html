@@ -70,7 +70,42 @@ a variable:</p>
 </div>
 <div class="section" id="tail-recursion">
 <h2>Tail recursion<a class="headerlink" href="#tail-recursion" title="Permalink to this headline">¶</a></h2>
-<p>TODO</p>
+<p>A call is said to be in tail position if the caller does nothing other than
+return the value of the recursive call.</p>
+<p><cite>scala.annotation.tailrec</cite> annotation gets information about whether method is
+optimised. You will then get a warning if they are not optimised by the compiler
+and compilation will fail.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Failed tail recursive function</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">scala.annotation.tailrec</span>
+
+<span class="nd">@tailrec</span>
+<span class="k">def</span> <span class="n">factorial</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">go</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">acc</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="o">)</span> <span class="n">acc</span>
+    <span class="k">else</span> <span class="n">go</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">n</span> <span class="o">*</span> <span class="n">acc</span><span class="o">)</span>
+  <span class="n">go</span><span class="o">(</span><span class="n">n</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="c1">// error: @tailrec annotated method contains no recursive calls</span>
+<span class="c1">//       def factorial(n: Int): Int = {</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Working recursive function</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">scala.annotation.tailrec</span>
+
+<span class="k">def</span> <span class="n">factorial</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="nd">@tailrec</span>
+  <span class="k">def</span> <span class="n">go</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">acc</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="o">)</span> <span class="n">acc</span>
+    <span class="k">else</span> <span class="n">go</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">n</span> <span class="o">*</span> <span class="n">acc</span><span class="o">)</span>
+  <span class="n">go</span><span class="o">(</span><span class="n">n</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="currying">
 <h2>Currying<a class="headerlink" href="#currying" title="Permalink to this headline">¶</a></h2>
@@ -78,8 +113,8 @@ a variable:</p>
 </div>
 <div class="section" id="option">
 <h2>Option<a class="headerlink" href="#option" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">Rough definition</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Rough definition</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">object</span> <span class="nc">Option</span> <span class="o">{</span>
   <span class="k">def</span> <span class="n">apply</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="nc">None</span> <span class="k">else</span> <span class="nc">Some</span><span class="o">(</span><span class="n">x</span><span class="o">)</span>
   <span class="k">def</span> <span class="n">empty</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span>
@@ -118,6 +153,38 @@ unlike an array or list.</p>
 its corresponding value without changing the program’s behavior. This requires
 that the expression is pure, that is to say the expression value must be
 the same for the same inputs and its evaluation must have no side effects.</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">String vs. StringBuilder</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">(</span><span class="s">&quot;Hello&quot;</span><span class="o">)</span>
+<span class="c1">// x: StringBuilder = Hello</span>
+
+<span class="k">val</span> <span class="n">y</span> <span class="k">=</span> <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="s">&quot;, World&quot;</span><span class="o">)</span>
+<span class="c1">// y: StringBuilder = Hello, World</span>
+
+<span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="n">y</span><span class="o">.</span><span class="n">toString</span>
+<span class="c1">// r1: String = Hello, World</span>
+
+<span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="n">y</span><span class="o">.</span><span class="n">toString</span>
+<span class="c1">// r2: String = Hello, World</span>
+
+<span class="c1">// r1 and r2 are the same</span>
+
+<span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">(</span><span class="s">&quot;Hello&quot;</span><span class="o">)</span>
+<span class="c1">// x: StringBuilder = Hello</span>
+
+<span class="k">val</span> <span class="n">r1</span> <span class="k">=</span> <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="s">&quot;, World&quot;</span><span class="o">).</span><span class="n">toString</span>
+<span class="c1">// r1: String = Hello, World</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">r2</span> <span class="k">=</span> <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="s">&quot;, World&quot;</span><span class="o">).</span><span class="n">toString</span>
+<span class="c1">// r2: String = Hello, World, World</span>
+
+<span class="c1">// r1 and r2 are not the same because of StringBuilder has internal state</span>
+<span class="c1">// and is not a pure function.</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Future vs. IO</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">cats.effect.IO</span>
 <span class="k">import</span> <span class="nn">scala.concurrent.</span><span class="o">{</span> <span class="nc">Await</span><span class="o">,</span> <span class="nc">Future</span><span class="o">}</span>
 <span class="k">import</span> <span class="nn">scala.concurrent.ExecutionContext.Implicits.global</span>
@@ -150,6 +217,7 @@ the same for the same inputs and its evaluation must have no side effects.</p>
 <span class="c1">// Hello from IO!</span>
 <span class="c1">// res1: Boolean = true</span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -197,8 +265,9 @@ the same for the same inputs and its evaluation must have no side effects.</p>
 <li class="toctree-l2"><a class="reference internal" href="evaluation_models.html">Evaluation models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="single_abstract_method.html">Single Abstract Method (SAM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structural_type.html">Structural type</a></li>
-<li class="toctree-l2"><a class="reference internal" href="value_classes.html">Value classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="value_class.html">Value classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cats_library/index.html">Cats library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="class.html">Class</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../multithreading/index.html">Multithreading</a></li>
