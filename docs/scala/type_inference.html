@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Value classes &#8212; Tech Notes  documentation</title>
+    <title>Type inference &#8212; Tech Notes  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Cats library" href="cats_library/index.html" />
-    <link rel="prev" title="Structural type" href="structural_type.html" />
+    <link rel="next" title="Standard Data Types" href="standard_data_types.html" />
+    <link rel="prev" title="Class" href="class.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,58 +31,36 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="value-classes">
-<h1>Value classes<a class="headerlink" href="#value-classes" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://docs.scala-lang.org/overviews/core/value-classes.html">https://docs.scala-lang.org/overviews/core/value-classes.html</a></p>
-<p><a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ javap Identifier.class
-Compiled from “ValueClass.scala”
-public class Identifier {</p>
-<blockquote>
-<div>public int id();
-public Identifier(int);</div></blockquote>
-<p>}
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ less ValueClass.scala
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ javap IdentifierVal.class
-Compiled from “ValueClass.scala”
-public final class IdentifierVal {</p>
-<blockquote>
-<div>public static boolean equals$extension(int, java.lang.Object);
-public static int hashCode$extension(int);
-public int id();
-public int hashCode();
-public boolean equals(java.lang.Object);
-public IdentifierVal(int);</div></blockquote>
-<p>}
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ rm IdentifierVal.class
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ rm IdentifierVal$.class
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ rm Identifier
-Identifier$.class  Identifier.class
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ rm Identifier*
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ javap IdentifierVal.class
-Error: class not found: IdentifierVal.class
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ scalac ValueClass.scala
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ javap Identifier.class
-Compiled from “ValueClass.scala”
-public class Identifier {</p>
-<blockquote>
-<div>public int id();
-public Identifier(int);</div></blockquote>
-<p>}
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ javap IdentifierVal.class
-Compiled from “ValueClass.scala”
-public final class IdentifierVal {</p>
-<blockquote>
-<div>public static boolean equals$extension(int, java.lang.Object);
-public static int hashCode$extension(int);
-public int id();
-public int hashCode();
-public boolean equals(java.lang.Object);
-public IdentifierVal(int);</div></blockquote>
-<p>}
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ vim ./Identifier.class
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ vim ValueClass.scala
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ git diff
-<a class="reference external" href="mailto:ivan&#46;kliuk&#37;&#52;&#48;Typhoon">ivan<span>&#46;</span>kliuk<span>&#64;</span>Typhoon</a>:~$ javap IdentifierVal.class</p>
+  <div class="section" id="type-inference">
+<h1>Type inference<a class="headerlink" href="#type-inference" title="Permalink to this headline">¶</a></h1>
+<p>When we call a function with an anonymous function for <cite>f</cite>, we have to specify
+the type of its argument, here named <cite>x</cite>:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Typed function literal</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">filter</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">l</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">Boolean</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="n">l</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">f</span><span class="o">)</span>
+<span class="c1">// filter: [A](l: List[A], f: A =&gt; Boolean)List[A]</span>
+
+<span class="n">filter</span><span class="o">(</span><span class="nc">List</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">),</span> <span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+<span class="c1">// res1: List[Int] = List(1, 2, 3)</span>
+
+<span class="n">filter</span><span class="o">(</span><span class="nc">List</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">),</span> <span class="n">x</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+<span class="c1">// &lt;console&gt;:13: error: missing parameter type</span>
+<span class="c1">//        filter(List(-3, -2, -1, 0, 1, 2, 3), x =&gt; x &gt; 0)</span>
+<span class="c1">//                                             ^</span>
+</pre></div>
+</div>
+</div>
+<p>When a function definition contains multiple argument groups (in other words,
+<a class="reference internal" href="functional_programming.html#currying"><span class="std std-ref">curried</span></a>), type information flows from left to right across
+these argument groups. The main reason for grouping the arguments this way is
+to assist with type inference.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Curried version</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">filter</span><span class="o">(</span><span class="nc">List</span><span class="o">(-</span><span class="mi">3</span><span class="o">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">))(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+<span class="n">res7</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -116,10 +94,10 @@ public IdentifierVal(int);</div></blockquote>
 <li class="toctree-l2"><a class="reference internal" href="evaluation_models.html">Evaluation models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="single_abstract_method.html">Single Abstract Method (SAM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structural_type.html">Structural type</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Value classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="value_class.html">Value classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cats_library/index.html">Cats library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="class.html">Class</a></li>
-<li class="toctree-l2"><a class="reference internal" href="type_inference.html">Type inference</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Type inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="standard_data_types.html">Standard Data Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="standard_data_types.html#list">List</a></li>
 <li class="toctree-l2"><a class="reference internal" href="standard_data_types.html#stream">Stream</a></li>
@@ -144,8 +122,8 @@ public IdentifierVal(int);</div></blockquote>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Scala</a><ul>
-      <li>Previous: <a href="structural_type.html" title="previous chapter">Structural type</a></li>
-      <li>Next: <a href="cats_library/index.html" title="next chapter">Cats library</a></li>
+      <li>Previous: <a href="class.html" title="previous chapter">Class</a></li>
+      <li>Next: <a href="standard_data_types.html" title="next chapter">Standard Data Types</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -170,7 +148,7 @@ public IdentifierVal(int);</div></blockquote>
       &copy;2018, Ivan Kliuk.
       
       |
-      <a href="../_sources/scala/value_class.rst.txt"
+      <a href="../_sources/scala/type_inference.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

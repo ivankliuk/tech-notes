@@ -14,6 +14,13 @@ A function but which performs one or both of the following things:
 Function literal
 ----------------
 
+A => B => C = ???
+
+The arrow => in front of the argument type B means that the function f takes its
+second argument by name and may choose not to evaluate it
+
+def foldRight[B](z: => B)(f: (A, => B) => B): B = ???
+
 A function literal is an alternate syntax for defining a function.
 It's useful for when you want to pass a function as an argument to a method
 (especially a higher-order one like a fold or a filter operation) but you don't
@@ -34,10 +41,21 @@ a variable:
     mul(3, 2)
     // res2: Int = 6
 
-Lambda function
----------------
 
-TODO
+Underscore notation for anonymous functions
+
+The anonymous function (x,y) => x + y can be written as _ + _ in situations where the types of x and y could be inferred by Scala. This is a useful shorthand in cases where the function parameters are mentioned just once in the body of the function. Each underscore in an anonymous function expression like _ + _ introduces a new (unnamed) function parameter and references it.
+
+Polymorphic function
+--------------------
+We’re using the term polymorphism in a slightly different way than you might
+ be used to if you’re familiar with object-oriented programming, where that
+ term usually connotes some form of subtyping or inheritance rela- tionship. T
+ here are no interfaces or subtyping here in this example. The kind of
+ polymorphism we’re using here is sometimes called parametric polymorphism.
+
+Monomorphic functions operate on only one type of data.
+Polymorphic functions work for any type it’s given.
 
 Tail recursion
 --------------
@@ -56,14 +74,15 @@ and compilation will fail.
 
     @tailrec
     def factorial(n: Int): Int = {
+    // Such functions is often called `go` or `loop` by convention.
       def go(n: Int, acc: Int): Int =
         if (n <= 0) acc
         else go(n - 1, n * acc)
       go(n, 1)
     }
 
-    // error: @tailrec annotated method contains no recursive calls
-    //       def factorial(n: Int): Int = {
+    // <console>:13: error: @tailrec annotated method contains no recursive calls
+    //        def factorial(n: Int): Int = {
 
 .. code-block:: scala
     :caption: Working recursive function
@@ -78,47 +97,38 @@ and compilation will fail.
       go(n, 1)
     }
 
+.. _currying:
+
 Currying
 --------
 
-TODO
-
-Option
-------
-
 .. code-block:: scala
-    :caption: Rough definition
 
-    object Option {
-      def apply[A](x: A): Option[A] = if (x == null) None else Some(x)
-      def empty[A] : Option[A] = None
-    }
+    (a: Int) => (b: Int) => (c: Int) => (d: Int) => a * b * c * d
+    // res0: Int => (Int => (Int => (Int => Int))) = $$Lambda$5542/173054796@5b1bbcc
 
-    sealed abstract class Option[+A] extends Product with Serializable {
-      self => ???
-    }
+    res0(1)
+    // res1: Int => (Int => (Int => Int)) = $$Lambda$5543/1868653446@18f63d41
 
-    final case class Some[+A](x: A) extends Option[A] {
-      def isEmpty = false
-      def get = x
-    }
+    res1(1, 2, 3, 4)
+    // <console>:13: error: 3 more arguments than can be applied to method apply: (v1: Int)Int => (Int => (Int => Int)) in trait Function1
+    //        res1(1, 2, 3, 4)
+    //                ^
 
-    case object None extends Option[Nothing] {
-      def isEmpty = true
-      def get = throw new NoSuchElementException("None.get")
-    }
+Side effects
+------------
 
+A function has a side effect if it does something other than simply return
+a result, for example:
 
-Either
-------
-TODO
+- Modifying a variable
+- Modifying a data structure in place
+- Setting a field on an object
+- Throwing an exception or halting with an error
+- Printing to the console or reading user input
+- Reading from or writing to a file
+- Drawing on the screen
 
-Tuple
------
-
-Tuples combine a fixed number of items together so that they can be passed
-around as whole. A tuple is immutable and can hold objects with different types,
-unlike an array or list.
 
 Referential transparency
 ------------------------
@@ -191,3 +201,104 @@ the same for the same inputs and its evaluation must have no side effects.
     // Hello from IO!
     // Hello from IO!
     // res1: Boolean = true
+
+RT expressions does not depend on context and may be reasoned about locally,
+        whereas the meaning of non-RT expressions is context-dependent and requires more global reasoning.
+
+Exceptions break RT and introduce context dependence, Exceptions are not type-safe.
+     The type of failingFn, Int => Int tells us
+        nothing about the fact that exceptions may occur, and the compiler will
+            certainly not force callers of failingFn to make a decision about
+                how to handle those excep- tions. If we forget to check for
+                    an exception in failingFn, this won’t be detected until runtime.
+
+The primary benefit of exceptions: they allow us to consolidate and centralize
+error-handling logic, rather than being forced to distribute this logic
+throughout our codebase. The technique we use is based on an old idea: instead
+of throwing an exception, we return a value indicating that an exceptional
+condition has occurred.
+
+Strictness and laziness
+-----------------------
+
+In general, the unevaluated form of an expression is called a thunk, and we
+ can force the thunk to evaluate the expression and get a result.
+
+scala> def maybeTwice(b: Boolean, i: => Int) = if (b) i+i else 0
+maybeTwice: (b: Boolean, i: => Int)Int
+scala> val x = maybeTwice(true, { println("hi"); 1+41 })
+hi
+hi
+x: Int = 84
+
+
+scala> def maybeTwice2(b: Boolean, i: => Int) = { | lazyvalj=i
+     |   if (b) j+j else 0
+|}
+maybeTwice: (b: Boolean, i: => Int)Int
+scala> val x = maybeTwice2(true, { println("hi"); 1+41 })
+hi
+x: Int = 84
+
+
+separation of concerns
+We want to separate the description of computations from actually running them.
+More generally speaking, laziness lets us separate the description of an expression from the evaluation of that expression.
+This gives us a powerful ability—we may choose to describe a “larger” expression than we need, and then evaluate only a por- tion of it.
+
+
+Corecursion
+-----------
+
+Corecursion is a type of operation that is dual to recursion.
+Whereas recursion works analytically, starting on data further from a base case
+and breaking it down into smaller data and repeating until one reaches a base
+case, corecursion works synthetically, starting from a base case and building
+it up, iteratively producing data further removed from a base case.
+
+.. code-block:: scala
+    :caption: Corecursive Fibonacci stream
+
+    def fibFrom(a: Int, b: Int): Stream[Int] = a #:: fibFrom(b, a + b)
+    // fibFrom: (a: Int, b: Int)Stream[Int]
+    
+    fibFrom(0, 1).take(10).toList
+    // res0: List[Int] = List(0, 1, 1, 2, 3, 5, 8, 13, 21, 34)
+
+Purely functional state
+-----------------------
+
+Here's the class with mutable state:
+
+.. code-block:: scala
+    :caption: Stateful class
+
+    class User(var age: Int, var name: String) {
+      def setAge(newAge: Int): Int = {
+        this.age = newAge
+        age
+      }
+
+      def setName(newName: String): String = {
+        this.name = newName
+        name
+      }
+    }
+
+This is the same class but refactored to provide purely functional state:
+
+.. code-block:: scala
+    :caption: Stateless class
+
+    class User(age: Int, name: String) {
+      def setAge(newAge: Int): (Int, User) = (newAge, new User(newAge, this.name))
+
+      def setName(newName: String): (String, User) = (newName, new User(this.age, newName))
+    }
+
+Methods `setAge` and `setName` have a type of form
+Each of our functions has a type of the form `RNG => (A, RNG)` for some type `A`.
+Functions of this type are called state actions or state transitions because
+they transform RNG states from one to the next. These state actions can be
+combined using combinators.
+

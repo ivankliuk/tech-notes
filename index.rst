@@ -12,7 +12,6 @@ Contents
 
    general/index
    oop/index
-   python/index
    scala/index
    multithreading/index
    web/index

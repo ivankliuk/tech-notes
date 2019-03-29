@@ -1,0 +1,226 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Standard Data Types &#8212; Tech Notes  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Collections" href="collections.html" />
+    <link rel="prev" title="Type inference" href="type_inference.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="standard-data-types">
+<h1>Standard Data Types<a class="headerlink" href="#standard-data-types" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="option">
+<h2>Option<a class="headerlink" href="#option" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Rough definition</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">sealed</span> <span class="k">trait</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span>
+<span class="nc">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Some</span><span class="o">[</span><span class="kt">+A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">object</span> <span class="nc">None</span> <span class="k">extends</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">Nothing</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="either">
+<h2>Either<a class="headerlink" href="#either" title="Permalink to this headline">¶</a></h2>
+<p><cite>Either</cite> is a disjoint union of two types (also called Disjunction).</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Rough definition</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">sealed</span> <span class="k">trait</span> <span class="nc">Either</span><span class="o">[</span><span class="kt">+E</span>, <span class="kt">+A</span><span class="o">]</span>
+<span class="nc">case</span> <span class="k">class</span> <span class="nc">Left</span><span class="o">[</span><span class="kt">+E</span><span class="o">](</span><span class="n">value</span><span class="k">:</span> <span class="kt">E</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Either</span><span class="o">[</span><span class="kt">E</span>, <span class="kt">Nothing</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Right</span><span class="o">[</span><span class="kt">+A</span><span class="o">](</span><span class="n">value</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Either</span><span class="o">[</span><span class="kt">Nothing</span>, <span class="kt">A</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="tuple">
+<h2>Tuple<a class="headerlink" href="#tuple" title="Permalink to this headline">¶</a></h2>
+<p>Tuples combine a fixed number of items together so that they can be passed
+around as whole. A tuple is immutable and can hold objects with different types,
+unlike an <cite>Array</cite> or <cite>List</cite>.
+Pairs and tuples of other arities are also algebraic data types.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Tuple</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">p</span> <span class="k">=</span> <span class="o">(</span><span class="s">&quot;Bob&quot;</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
+<span class="c1">// p: (String, Int) = (Bob,42)</span>
+
+<span class="c1">// (&quot;Bob&quot;, 42) is a syntactic sugar for:</span>
+
+<span class="nc">Tuple2</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Int</span><span class="o">](</span><span class="s">&quot;Bob&quot;</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
+<span class="c1">// res0: (String, Int) = (Bob,42)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">_1</span>
+<span class="c1">// res1: String = Bob</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">_2</span>
+<span class="c1">// res2: Int = 42</span>
+
+<span class="n">p</span> <span class="k">match</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">b</span> <span class="o">}</span>
+<span class="c1">// res3: Int = 42</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="list">
+<h1>List<a class="headerlink" href="#list" title="Permalink to this headline">¶</a></h1>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Rough definition</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">sealed</span> <span class="k">trait</span> <span class="nc">List</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span>
+<span class="nc">case</span> <span class="k">object</span> <span class="nc">Nil</span> <span class="k">extends</span> <span class="nc">List</span><span class="o">[</span><span class="kt">Nothing</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Cons</span><span class="o">[</span><span class="kt">+A</span><span class="o">](</span><span class="n">head</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">List</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="stream">
+<h1>Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h1>
+<p><cite>Stream</cite> is also called <em>lazy list</em>.</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Rough definition</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">sealed</span> <span class="k">trait</span> <span class="nc">Stream</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span>
+<span class="nc">case</span> <span class="k">object</span> <span class="nc">Empty</span> <span class="k">extends</span> <span class="nc">Stream</span><span class="o">[</span><span class="kt">Nothing</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Cons</span><span class="o">[</span><span class="kt">+A</span><span class="o">](</span><span class="n">h</span><span class="k">:</span> <span class="o">()</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">,</span> <span class="n">t</span><span class="k">:</span> <span class="o">()</span> <span class="o">=&gt;</span> <span class="nc">Stream</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">Stream</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Tech Notes</a></h1>
+
+
+
+<p class="blurb">A knot in my hanky</p>
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../oop/index.html">Object oriented programming</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Scala</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="functional_programming.html">Functional Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function_composition.html">Function composition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implicits.html">Implicits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="type_class.html">Type class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="context_bound.html">Context Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation_models.html">Evaluation models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="single_abstract_method.html">Single Abstract Method (SAM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structural_type.html">Structural type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="value_class.html">Value classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cats_library/index.html">Cats library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="class.html">Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="type_inference.html">Type inference</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Standard Data Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#option">Option</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#either">Either</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tuple">Tuple</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#list">List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stream">Stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collections.html">Collections</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../multithreading/index.html">Multithreading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../web/index.html">Web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../messaging_systems/index.html">Messaging systems</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://github.com/ivankliuk/tech-notes">Sources</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Scala</a><ul>
+      <li>Previous: <a href="type_inference.html" title="previous chapter">Type inference</a></li>
+      <li>Next: <a href="collections.html" title="next chapter">Collections</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ivan Kliuk.
+      
+      |
+      <a href="../_sources/scala/standard_data_types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-120714400-1']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

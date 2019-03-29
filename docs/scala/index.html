@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Functional Programming" href="functional_programming.html" />
-    <link rel="prev" title="Decorators" href="../python/decorators.html" />
+    <link rel="prev" title="SOLID principles" href="../oop/solid.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -39,13 +39,14 @@
 <li class="toctree-l1"><a class="reference internal" href="functional_programming.html">Functional Programming</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="functional_programming.html#higher-order-function">Higher order function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="functional_programming.html#function-literal">Function literal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="functional_programming.html#lambda-function">Lambda function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional_programming.html#polymorphic-function">Polymorphic function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="functional_programming.html#tail-recursion">Tail recursion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="functional_programming.html#currying">Currying</a></li>
-<li class="toctree-l2"><a class="reference internal" href="functional_programming.html#option">Option</a></li>
-<li class="toctree-l2"><a class="reference internal" href="functional_programming.html#either">Either</a></li>
-<li class="toctree-l2"><a class="reference internal" href="functional_programming.html#tuple">Tuple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional_programming.html#side-effects">Side effects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="functional_programming.html#referential-transparency">Referential transparency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional_programming.html#strictness-and-laziness">Strictness and laziness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional_programming.html#corecursion">Corecursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functional_programming.html#purely-functional-state">Purely functional state</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="function_composition.html">Function composition</a></li>
@@ -62,6 +63,16 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="class.html">Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="type_inference.html">Type inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standard_data_types.html">Standard Data Types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="standard_data_types.html#option">Option</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_data_types.html#either">Either</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_data_types.html#tuple">Tuple</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="standard_data_types.html#list">List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standard_data_types.html#stream">Stream</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collections.html">Collections</a></li>
 </ul>
 </div>
 </div></blockquote>
@@ -89,7 +100,6 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../oop/index.html">Object oriented programming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/index.html">Python</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Scala</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="functional_programming.html">Functional Programming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="function_composition.html">Function composition</a></li>
@@ -102,6 +112,11 @@
 <li class="toctree-l2"><a class="reference internal" href="value_class.html">Value classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cats_library/index.html">Cats library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="class.html">Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="type_inference.html">Type inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_data_types.html">Standard Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_data_types.html#list">List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_data_types.html#stream">Stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collections.html">Collections</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../multithreading/index.html">Multithreading</a></li>
@@ -121,7 +136,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../python/decorators.html" title="previous chapter">Decorators</a></li>
+      <li>Previous: <a href="../oop/solid.html" title="previous chapter">SOLID principles</a></li>
       <li>Next: <a href="functional_programming.html" title="next chapter">Functional Programming</a></li>
   </ul></li>
 </ul>

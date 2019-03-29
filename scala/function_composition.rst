@@ -1,6 +1,12 @@
 Function composition
 ====================
 
+Generally, function composition can be applied only on function with one
+parameter. To perform functional composition on function with more
+than one parameter represent it as a set of functions with one parameter.
+
+**Functions in Scala**
+
 A function with no argument has only one method:
 
 .. code-block:: scala

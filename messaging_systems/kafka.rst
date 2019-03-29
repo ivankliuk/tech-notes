@@ -42,3 +42,5 @@ of consumption. It's configurable per topic and default value is 7 days.
 one or more brokers. Each partition must fit entirely on a single machine.
 
 *Replication factor* is configured at topic level.
+
+Good reading: https://kafka.apache.org/documentation/

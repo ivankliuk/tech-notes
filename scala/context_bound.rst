@@ -18,7 +18,7 @@ How can `B[A]` implicit parameter be reached?
       g(a)
     }
 
-De-sugared version of Context Bound
+De-sugared version of Context Bound:
 
 .. code-block:: scala
 

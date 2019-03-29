@@ -43,14 +43,18 @@
 </div>
 <div class="section" id="function-literal">
 <span id="id1"></span><h2>Function literal<a class="headerlink" href="#function-literal" title="Permalink to this headline">¶</a></h2>
+<p>A =&gt; B =&gt; C = ???</p>
+<p>The arrow =&gt; in front of the argument type B means that the function f takes its
+second argument by name and may choose not to evaluate it</p>
+<p>def foldRight[B](z: =&gt; B)(f: (A, =&gt; B) =&gt; B): B = ???</p>
 <p>A function literal is an alternate syntax for defining a function.
 It’s useful for when you want to pass a function as an argument to a method
 (especially a higher-order one like a fold or a filter operation) but you don’t
 want to define a separate function. Function literals are anonymous - they don’t
 have a name by default, but you can give them a name by binding them to
 a variable:</p>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Usage</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Usage</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
 <span class="c1">// res0: (Int, Int) =&gt; Int = $$Lambda$5584/1797607710@953f466</span>
 
@@ -63,10 +67,20 @@ a variable:</p>
 </pre></div>
 </div>
 </div>
+<p>Underscore notation for anonymous functions</p>
+<p>The anonymous function (x,y) =&gt; x + y can be written as _ + _ in situations where the types of x and y could be inferred by Scala. This is a useful shorthand in cases where the function parameters are mentioned just once in the body of the function. Each underscore in an anonymous function expression like _ + _ introduces a new (unnamed) function parameter and references it.</p>
 </div>
-<div class="section" id="lambda-function">
-<h2>Lambda function<a class="headerlink" href="#lambda-function" title="Permalink to this headline">¶</a></h2>
-<p>TODO</p>
+<div class="section" id="polymorphic-function">
+<h2>Polymorphic function<a class="headerlink" href="#polymorphic-function" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>We’re using the term polymorphism in a slightly different way than you might</dt>
+<dd>be used to if you’re familiar with object-oriented programming, where that
+term usually connotes some form of subtyping or inheritance rela- tionship. T
+here are no interfaces or subtyping here in this example. The kind of
+polymorphism we’re using here is sometimes called parametric polymorphism.</dd>
+</dl>
+<p>Monomorphic functions operate on only one type of data.
+Polymorphic functions work for any type it’s given.</p>
 </div>
 <div class="section" id="tail-recursion">
 <h2>Tail recursion<a class="headerlink" href="#tail-recursion" title="Permalink to this headline">¶</a></h2>
@@ -75,25 +89,26 @@ return the value of the recursive call.</p>
 <p><cite>scala.annotation.tailrec</cite> annotation gets information about whether method is
 optimised. You will then get a warning if they are not optimised by the compiler
 and compilation will fail.</p>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">Failed tail recursive function</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Failed tail recursive function</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">scala.annotation.tailrec</span>
 
 <span class="nd">@tailrec</span>
 <span class="k">def</span> <span class="n">factorial</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+<span class="c1">// Such functions is often called `go` or `loop` by convention.</span>
   <span class="k">def</span> <span class="n">go</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">acc</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
     <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="o">)</span> <span class="n">acc</span>
     <span class="k">else</span> <span class="n">go</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">n</span> <span class="o">*</span> <span class="n">acc</span><span class="o">)</span>
   <span class="n">go</span><span class="o">(</span><span class="n">n</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
 <span class="o">}</span>
 
-<span class="c1">// error: @tailrec annotated method contains no recursive calls</span>
-<span class="c1">//       def factorial(n: Int): Int = {</span>
+<span class="c1">// &lt;console&gt;:13: error: @tailrec annotated method contains no recursive calls</span>
+<span class="c1">//        def factorial(n: Int): Int = {</span>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">Working recursive function</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Working recursive function</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">scala.annotation.tailrec</span>
 
 <span class="k">def</span> <span class="n">factorial</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
@@ -108,44 +123,33 @@ and compilation will fail.</p>
 </div>
 </div>
 <div class="section" id="currying">
-<h2>Currying<a class="headerlink" href="#currying" title="Permalink to this headline">¶</a></h2>
-<p>TODO</p>
-</div>
-<div class="section" id="option">
-<h2>Option<a class="headerlink" href="#option" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">Rough definition</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
-<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">object</span> <span class="nc">Option</span> <span class="o">{</span>
-  <span class="k">def</span> <span class="n">apply</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="nc">None</span> <span class="k">else</span> <span class="nc">Some</span><span class="o">(</span><span class="n">x</span><span class="o">)</span>
-  <span class="k">def</span> <span class="n">empty</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span>
-<span class="o">}</span>
+<span id="id2"></span><h2>Currying<a class="headerlink" href="#currying" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">d</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="o">*</span> <span class="n">c</span> <span class="o">*</span> <span class="n">d</span>
+<span class="c1">// res0: Int =&gt; (Int =&gt; (Int =&gt; (Int =&gt; Int))) = $$Lambda$5542/173054796@5b1bbcc</span>
 
-<span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">Product</span> <span class="k">with</span> <span class="nc">Serializable</span> <span class="o">{</span>
-  <span class="n">self</span> <span class="k">=&gt;</span> <span class="o">???</span>
-<span class="o">}</span>
+<span class="n">res0</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+<span class="c1">// res1: Int =&gt; (Int =&gt; (Int =&gt; Int)) = $$Lambda$5543/1868653446@18f63d41</span>
 
-<span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Some</span><span class="o">[</span><span class="kt">+A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
-  <span class="k">def</span> <span class="n">isEmpty</span> <span class="k">=</span> <span class="kc">false</span>
-  <span class="k">def</span> <span class="n">get</span> <span class="k">=</span> <span class="n">x</span>
-<span class="o">}</span>
-
-<span class="k">case</span> <span class="k">object</span> <span class="nc">None</span> <span class="k">extends</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">Nothing</span><span class="o">]</span> <span class="o">{</span>
-  <span class="k">def</span> <span class="n">isEmpty</span> <span class="k">=</span> <span class="kc">true</span>
-  <span class="k">def</span> <span class="n">get</span> <span class="k">=</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">NoSuchElementException</span><span class="o">(</span><span class="s">&quot;None.get&quot;</span><span class="o">)</span>
-<span class="o">}</span>
+<span class="n">res1</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+<span class="c1">// &lt;console&gt;:13: error: 3 more arguments than can be applied to method apply: (v1: Int)Int =&gt; (Int =&gt; (Int =&gt; Int)) in trait Function1</span>
+<span class="c1">//        res1(1, 2, 3, 4)</span>
+<span class="c1">//                ^</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="either">
-<h2>Either<a class="headerlink" href="#either" title="Permalink to this headline">¶</a></h2>
-<p>TODO</p>
-</div>
-<div class="section" id="tuple">
-<h2>Tuple<a class="headerlink" href="#tuple" title="Permalink to this headline">¶</a></h2>
-<p>Tuples combine a fixed number of items together so that they can be passed
-around as whole. A tuple is immutable and can hold objects with different types,
-unlike an array or list.</p>
+<div class="section" id="side-effects">
+<h2>Side effects<a class="headerlink" href="#side-effects" title="Permalink to this headline">¶</a></h2>
+<p>A function has a side effect if it does something other than simply return
+a result, for example:</p>
+<ul class="simple">
+<li>Modifying a variable</li>
+<li>Modifying a data structure in place</li>
+<li>Setting a field on an object</li>
+<li>Throwing an exception or halting with an error</li>
+<li>Printing to the console or reading user input</li>
+<li>Reading from or writing to a file</li>
+<li>Drawing on the screen</li>
+</ul>
 </div>
 <div class="section" id="referential-transparency">
 <h2>Referential transparency<a class="headerlink" href="#referential-transparency" title="Permalink to this headline">¶</a></h2>
@@ -153,8 +157,8 @@ unlike an array or list.</p>
 its corresponding value without changing the program’s behavior. This requires
 that the expression is pure, that is to say the expression value must be
 the same for the same inputs and its evaluation must have no side effects.</p>
-<div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text">String vs. StringBuilder</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">String vs. StringBuilder</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">(</span><span class="s">&quot;Hello&quot;</span><span class="o">)</span>
 <span class="c1">// x: StringBuilder = Hello</span>
 
@@ -183,8 +187,8 @@ the same for the same inputs and its evaluation must have no side effects.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id7">
-<div class="code-block-caption"><span class="caption-text">Future vs. IO</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Future vs. IO</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
 <div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">cats.effect.IO</span>
 <span class="k">import</span> <span class="nn">scala.concurrent.</span><span class="o">{</span> <span class="nc">Await</span><span class="o">,</span> <span class="nc">Future</span><span class="o">}</span>
 <span class="k">import</span> <span class="nn">scala.concurrent.ExecutionContext.Implicits.global</span>
@@ -219,6 +223,116 @@ the same for the same inputs and its evaluation must have no side effects.</p>
 </pre></div>
 </div>
 </div>
+<dl class="docutils">
+<dt>RT expressions does not depend on context and may be reasoned about locally,</dt>
+<dd>whereas the meaning of non-RT expressions is context-dependent and requires more global reasoning.</dd>
+<dt>Exceptions break RT and introduce context dependence, Exceptions are not type-safe.</dt>
+<dd><dl class="first last docutils">
+<dt>The type of failingFn, Int =&gt; Int tells us</dt>
+<dd><dl class="first last docutils">
+<dt>nothing about the fact that exceptions may occur, and the compiler will</dt>
+<dd><dl class="first last docutils">
+<dt>certainly not force callers of failingFn to make a decision about</dt>
+<dd><dl class="first last docutils">
+<dt>how to handle those excep- tions. If we forget to check for</dt>
+<dd>an exception in failingFn, this won’t be detected until runtime.</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>The primary benefit of exceptions: they allow us to consolidate and centralize
+error-handling logic, rather than being forced to distribute this logic
+throughout our codebase. The technique we use is based on an old idea: instead
+of throwing an exception, we return a value indicating that an exceptional
+condition has occurred.</p>
+</div>
+<div class="section" id="strictness-and-laziness">
+<h2>Strictness and laziness<a class="headerlink" href="#strictness-and-laziness" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>In general, the unevaluated form of an expression is called a thunk, and we</dt>
+<dd>can force the thunk to evaluate the expression and get a result.</dd>
+</dl>
+<p>scala&gt; def maybeTwice(b: Boolean, i: =&gt; Int) = if (b) i+i else 0
+maybeTwice: (b: Boolean, i: =&gt; Int)Int
+scala&gt; val x = maybeTwice(true, { println(“hi”); 1+41 })
+hi
+hi
+x: Int = 84</p>
+<dl class="docutils">
+<dt>scala&gt; def maybeTwice2(b: Boolean, i: =&gt; Int) = { | lazyvalj=i</dt>
+<dd><div class="first last line-block">
+<div class="line">if (b) j+j else 0</div>
+</div>
+</dd>
+</dl>
+<p><a href="#id3"><span class="problematic" id="id4">|</span></a>}
+maybeTwice: (b: Boolean, i: =&gt; Int)Int
+scala&gt; val x = maybeTwice2(true, { println(“hi”); 1+41 })
+hi
+x: Int = 84</p>
+<p>separation of concerns
+We want to separate the description of computations from actually running them.
+More generally speaking, laziness lets us separate the description of an expression from the evaluation of that expression.
+This gives us a powerful ability—we may choose to describe a “larger” expression than we need, and then evaluate only a por- tion of it.</p>
+</div>
+<div class="section" id="corecursion">
+<h2>Corecursion<a class="headerlink" href="#corecursion" title="Permalink to this headline">¶</a></h2>
+<p>Corecursion is a type of operation that is dual to recursion.
+Whereas recursion works analytically, starting on data further from a base case
+and breaking it down into smaller data and repeating until one reaches a base
+case, corecursion works synthetically, starting from a base case and building
+it up, iteratively producing data further removed from a base case.</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Corecursive Fibonacci stream</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="n">fibFrom</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Stream</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">a</span> <span class="o">#::</span> <span class="n">fibFrom</span><span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="o">)</span>
+<span class="c1">// fibFrom: (a: Int, b: Int)Stream[Int]</span>
+
+<span class="n">fibFrom</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">).</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="n">toList</span>
+<span class="c1">// res0: List[Int] = List(0, 1, 1, 2, 3, 5, 8, 13, 21, 34)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="purely-functional-state">
+<h2>Purely functional state<a class="headerlink" href="#purely-functional-state" title="Permalink to this headline">¶</a></h2>
+<p>Here’s the class with mutable state:</p>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Stateful class</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="o">(</span><span class="k">var</span> <span class="n">age</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="k">var</span> <span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">setAge</span><span class="o">(</span><span class="n">newAge</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="n">age</span> <span class="k">=</span> <span class="n">newAge</span>
+    <span class="n">age</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">setName</span><span class="o">(</span><span class="n">newName</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="n">name</span> <span class="k">=</span> <span class="n">newName</span>
+    <span class="n">name</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<p>This is the same class but refactored to provide purely functional state:</p>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">Stateless class</span><a class="headerlink" href="#id12" title="Permalink to this code">¶</a></div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="o">(</span><span class="n">age</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">setAge</span><span class="o">(</span><span class="n">newAge</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">User</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="n">newAge</span><span class="o">,</span> <span class="k">new</span> <span class="nc">User</span><span class="o">(</span><span class="n">newAge</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="n">name</span><span class="o">))</span>
+
+  <span class="k">def</span> <span class="n">setName</span><span class="o">(</span><span class="n">newName</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">String</span><span class="o">,</span> <span class="kt">User</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="n">newName</span><span class="o">,</span> <span class="k">new</span> <span class="nc">User</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="n">age</span><span class="o">,</span> <span class="n">newName</span><span class="o">))</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<p>Methods <cite>setAge</cite> and <cite>setName</cite> have a type of form
+Each of our functions has a type of the form <cite>RNG =&gt; (A, RNG)</cite> for some type <cite>A</cite>.
+Functions of this type are called state actions or state transitions because
+they transform RNG states from one to the next. These state actions can be
+combined using combinators.</p>
 </div>
 </div>
 
@@ -244,18 +358,18 @@ the same for the same inputs and its evaluation must have no side effects.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../oop/index.html">Object oriented programming</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../python/index.html">Python</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Scala</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Functional Programming</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#higher-order-function">Higher order function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#function-literal">Function literal</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#lambda-function">Lambda function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#polymorphic-function">Polymorphic function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tail-recursion">Tail recursion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#currying">Currying</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#option">Option</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#either">Either</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tuple">Tuple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#side-effects">Side effects</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#referential-transparency">Referential transparency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#strictness-and-laziness">Strictness and laziness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#corecursion">Corecursion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#purely-functional-state">Purely functional state</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="function_composition.html">Function composition</a></li>
@@ -268,6 +382,11 @@ the same for the same inputs and its evaluation must have no side effects.</p>
 <li class="toctree-l2"><a class="reference internal" href="value_class.html">Value classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cats_library/index.html">Cats library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="class.html">Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="type_inference.html">Type inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_data_types.html">Standard Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_data_types.html#list">List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standard_data_types.html#stream">Stream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collections.html">Collections</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../multithreading/index.html">Multithreading</a></li>

@@ -15,3 +15,6 @@ Scala
     value_class
     cats_library/index
     class
+    type_inference
+    standard_data_types
+    collections
